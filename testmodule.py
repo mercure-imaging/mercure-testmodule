@@ -22,7 +22,7 @@ import pydicom
 from pydicom.uid import generate_uid
 
 # Imports for manipulating pixel data
-from scipy.ndimage.filters import gaussian_filter
+from scipy.ndimage import gaussian_filter
 
 
 def process_image(file, in_folder, out_folder, series_uid, settings):
@@ -92,6 +92,9 @@ def main(args=sys.argv[1:]):
     # Overwrite default values with settings from the task file (if present)
     if task.get("process", ""):
         settings.update(task["process"].get("settings", {}))
+
+    # Print the filter strength for debugging purpose
+    print(f"Filter strength: {settings['sigma']}")
 
     # Collect all DICOM series in the input folder. By convention, DICOM files provided by
     # mercure have the format [series_UID]#[file_UID].dcm. Thus, by splitting the file
